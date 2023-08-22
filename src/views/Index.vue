@@ -30,9 +30,17 @@
 
           <el-menu-item index="1-3">
             <template #title>
+              <el-icon><Cloudy /></el-icon>
               <span> 菜單管理 </span>
             </template>
           </el-menu-item>
+        </el-sub-menu>
+
+        <el-sub-menu index="2">
+          <template #title>
+            <el-icon><location /></el-icon>
+            <span>系統工具</span>
+          </template>
         </el-sub-menu>
       </el-menu>
     </el-aside>
@@ -111,5 +119,6 @@ import { ElIcon, ElMenuItem } from "element-plus";
 
 .el-menu-vertical-demo {
   height: 100%;
+  padding-left: 20px;
 }
 </style>
