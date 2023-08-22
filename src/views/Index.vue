@@ -11,7 +11,7 @@
         <el-sub-menu index="1">
           <template #title>
             <el-icon><location /></el-icon>
-            <span>系統管理 </span>
+            <span>系統管理</span>
           </template>
 
           <el-menu-item index="1-1">
