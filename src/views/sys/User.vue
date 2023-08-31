@@ -1,7 +1,7 @@
 <template>
-  <div>main</div>
+  <div>用戶管理</div>
 </template>
 
 <script setup></script>
 
-<style scoped></style>
+<style></style>
