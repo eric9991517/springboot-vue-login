@@ -69,7 +69,8 @@ router.beforeEach((to, from, next) => {
       console.log(res.data.data.nav);
 
       // 取得MenuList
-      store.commit("setMenuList", res.data.data.nav);
+      store.commit("menu/setMenuList", res.data.data.nav);
+      // store.commit("setMenuList", res.data.data.nav);
       // 取得用戶權限
       store.commit("setPermList", res.data.authoritys);
 

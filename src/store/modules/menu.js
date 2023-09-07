@@ -9,6 +9,7 @@ export default createStore({
   mutations: {
     setMenuList(state, menu) {
       state.menuList = menu;
+      console.log(menu);
     },
     setPermList(state, perm) {
       state.permList = perm;
@@ -19,4 +20,5 @@ export default createStore({
     menuList: (state) => state.menuList,
     permList: (state) => state.permList,
   },
+  namespaced: true,
 });

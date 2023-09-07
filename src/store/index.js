@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import menuModule from "../store/modules/menu";
 
 export default createStore({
   state: {
@@ -15,5 +16,7 @@ export default createStore({
     },
   },
   actions: {},
-  modules: {},
+  modules: {
+    menu: menuModule,
+  },
 });

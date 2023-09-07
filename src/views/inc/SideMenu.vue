@@ -45,9 +45,7 @@ let menuList = ref();
 
 const store = useStore(); // 使用 useStore 來獲取 Vuex store 實例
 
-menuList = computed(() => store.getters.menuList);
-
-console.log(menuList);
+menuList = computed(() => store.menu.getters.menuList);
 </script>
 
 <style scoped>
