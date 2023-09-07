@@ -45,68 +45,65 @@
   </el-row>
 </template>
 
-<script>
-// import axios from "axios";
-export default {
-  name: "Login",
-  data() {
-    return {
-      loginForm: {
-        username: "",
-        password: "",
-        code: "",
-        token: "",
-      },
-      rules: {
-        username: [
-          { required: true, message: "请输入用戶名", trigger: "blur" },
-        ],
-        password: [{ required: true, message: "请输入密碼", trigger: "blur" }],
-        code: [
-          { required: true, message: "请输入驗證碼", trigger: "blur" },
-          { min: 5, max: 5, message: "長度為 5 個英數字", trigger: "blur" },
-        ],
-      },
-      captchaImg: null,
-    };
-  },
-  methods: {
-    submitForm: function (formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          this.$axios
-            .post("/login", this.loginForm)
-            .then((res) => {
-              const jwt = res.headers["authorization"];
-              this.$store.commit("SET_TOKEN", jwt);
-              this.$router.push("/index");
-            })
-            .catch((error) => {
-              // 处理错误逻辑
-              console.error("submit error:", "安安你好");
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    getCaptcha() {
-      this.$axios.get("/captcha").then((res) => {
-        // console.log('/captcha')
-        // console.log(res.data.data.captchaImg)
-        this.loginForm.token = res.data.data.token;
-        this.captchaImg = res.data.data.captchaImg;
-      });
-    },
-  },
-  created() {
-    this.getCaptcha();
-  },
+<script setup>
+import axios from "axios";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+
+const loginForm = ref({
+  username: "",
+  password: "",
+  code: "",
+  token: "",
+});
+
+const rules = ref({
+  username: [{ required: true, message: "请输入用戶名", trigger: "blur" }],
+  password: [{ required: true, message: "请输入密碼", trigger: "blur" }],
+  code: [
+    { required: true, message: "请输入驗證碼", trigger: "blur" },
+    { min: 5, max: 5, message: "長度為 5 個英數字", trigger: "blur" },
+  ],
+});
+
+const captchaImg = ref(null);
+const router = useRouter();
+
+const submitForm = (formName) => {
+  $refs[formName].validate((valid) => {
+    if (valid) {
+      axios
+        .post("/login", loginForm.value)
+        .then((res) => {
+          const jwt = res.headers["authorization"];
+          $store.commit("SET_TOKEN", jwt);
+          router.push("/index");
+        })
+        .catch((error) => {
+          // 处理错误逻辑
+          console.error("submit error:", "安安你好");
+        });
+    } else {
+      console.log("error submit!!");
+      return false;
+    }
+  });
 };
+
+const resetForm = (formName) => {
+  $refs[formName].resetFields();
+};
+
+const getCaptcha = () => {
+  axios.get("/captcha").then((res) => {
+    loginForm.token = res.data.data.token;
+    captchaImg.value = res.data.data.captchaImg;
+  });
+};
+
+onMounted(() => {
+  getCaptcha();
+});
 </script>
 
 <style scoped>

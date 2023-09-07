@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./router";
+import router from "./router/index";
 import store from "./store";
 
 import ElementPlus from "element-plus";
@@ -23,7 +23,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.config.globalProperties.$axios = axios;
 
 // 注册全局的 router
-app.config.globalProperties.$router = router;
+// app.config.globalProperties.$router = router;
 
 app.use(store);
 app.use(router);

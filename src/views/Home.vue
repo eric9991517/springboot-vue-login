@@ -15,8 +15,12 @@
             </span>
             <template #dropdown>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>個人中心</el-dropdown-item>
-                <el-dropdown-item>退出</el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link :to="{ name: 'userCenter' }"
+                    >個人中心</router-link
+                  >
+                </el-dropdown-item>
+                <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -29,19 +33,42 @@
 
 <script setup>
 import SideMenuVue from "./inc/SideMenu.vue";
-import { ref, reactive, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
-const userInfo = reactive({
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
+const userInfo = ref({
   id: "",
   username: "",
   avatar: "",
 });
 
-function getUserInfo() {
-  axios.get("/sys/userInfo").then((res) => {
-    userInfo = res.data.data;
-  });
+async function getUserInfo() {
+  try {
+    const response = await axios.get("/sys/userInfo");
+    if (response.status === 200) {
+      userInfo.value.id = response.data.id;
+      userInfo.value.username = response.data.username;
+      userInfo.value.avatar = response.data.avatar;
+    }
+    console.log(userInfo.value.avatar);
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+  }
 }
+
+const { commit } = useStore(); // 使用 useStore 获取 store 并解构出 commit 方法
+const router = useRouter();
+
+const logout = () => {
+  axios.post("/logout").then((res) => {
+    localStorage.clear();
+    sessionStorage.clear();
+    commit("resetState"); // 使用 commit 方法来提交 mutation
+    router.push("/login");
+  });
+};
 
 onMounted(() => {
   getUserInfo();
@@ -85,5 +112,8 @@ onMounted(() => {
   color: #333;
   text-align: center;
   line-height: 160px;
+}
+a {
+  text-decoration: none;
 }
 </style>

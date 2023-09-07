@@ -15,51 +15,39 @@
       </el-menu-item>
     </RouterLink>
 
-    <el-sub-menu index="1">
+    <el-sub-menu :index="menu.index" v-for="menu in menuList">
       <template #title>
-        <el-icon><location /></el-icon>
-        <span>系統管理</span>
+        <el-icon>
+          <component :is="menu.icon"></component>
+        </el-icon>
+        <span>{{ menu.title }}</span>
       </template>
 
-      <RouterLink to="/users">
-        <el-menu-item index="1-1">
+      <RouterLink :to="item.path" v-for="item in menu.children">
+        <el-menu-item :index="item.index">
           <template #title>
-            <el-icon><search /></el-icon>
-            <span> 用戶管理 </span>
+            <el-icon>
+              <component :is="item.icon"></component>
+            </el-icon>
+            <span>{{ item.title }}</span>
           </template>
         </el-menu-item>
       </RouterLink>
-
-      <RouterLink to="/roles">
-        <el-menu-item index="1-2">
-          <template #title>
-            <el-icon><User /></el-icon>
-            <span> 角色管理 </span>
-          </template>
-        </el-menu-item>
-      </RouterLink>
-
-      <RouterLink to="/menus">
-        <el-menu-item index="1-3">
-          <template #title>
-            <el-icon><Cloudy /></el-icon>
-            <span> 菜單管理 </span>
-          </template>
-        </el-menu-item>
-      </RouterLink>
-    </el-sub-menu>
-
-    <el-sub-menu index="2">
-      <template #title>
-        <el-icon><location /></el-icon>
-        <span>系統工具</span>
-      </template>
     </el-sub-menu>
   </el-menu>
 </template>
 
-<script>
-export default {};
+<script setup>
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+
+let menuList = ref();
+
+const store = useStore(); // 使用 useStore 來獲取 Vuex store 實例
+
+menuList = computed(() => store.getters.menuList);
+
+console.log(menuList);
 </script>
 
 <style scoped>
